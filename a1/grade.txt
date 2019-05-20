@@ -1,0 +1,189 @@
+Grade: 35.00/50.00
+
+6 Deduction(s):
+
+--------------
+#1: 5.00 points
+Failing test: test_bfs_3: 
+        @points=5
+
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 110, in test_bfs_3
+    [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 3), ('F', 3), ('G', 2)])
+AssertionError: Lists differ: [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 2), ('F', 1), ('G', 2)] != [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 3), ('F', 3), ('G', 2)]
+
+First differing element 4:
+('E', 2)
+('E', 3)
+
+- [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 2), ('F', 1), ('G', 2)]
+?                                                ^         ^
+
++ [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 3), ('F', 3), ('G', 2)]
+?                                                ^         ^
+
+
+source:
+    def test_bfs_3(self):
+         """
+         @points=5
+ 
+         """
+         graph = example_graph2()
+         node2distances, node2num_paths, node2parents = bfs(graph, 'A', max_depth=10)
+         res = sorted(node2distances.items())
+         res = [(str(x), int(y)) for x,y in res]
+         self.assertListEqual(res,
+                              [('A', 0), ('B', 2), ('C', 1), ('D', 1), ('E', 3), ('F', 4), ('G', 2)])
+         res = sorted(node2num_paths.items())
+         res = [(str(x), int(y)) for x,y in res]
+         self.assertListEqual(res,
+                              [('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 3), ('F', 3), ('G', 2)])
+         res = sorted((node, sorted(parents)) for node, parents in node2parents.items())
+         self.assertListEqual(res,
+                              [('B', ['D']), ('C', ['A']), ('D', ['A']), ('E', ['B', 'G']), ('F', ['E']), ('G', ['C', 'D'])])
+         b = bottom_up('A', node2distances, node2num_paths, node2parents)
+         self.assertEqual(1.0, round(b[('E', 'F')], 2))
+         self.assertEqual(3.83, round(b[('A', 'D')], 2))
+         self.assertEqual(1.67, round(b[('B', 'D')], 2))
+         self.assertEqual(1.17, round(b[('D', 'G')], 2))
+         self.assertEqual(2.17, round(b[('A', 'C')], 2))
+         self.assertEqual(0.67, round(b[('B', 'E')], 2))
+         self.assertEqual(1.33, round(b[('E', 'G')], 2))
+         self.assertEqual(1.17, round(b[('C', 'G')], 2))
+--------------
+
+--------------
+#2: 4.00 points
+Failing test: test_brute_force_norm_cut1: 
+        @points=4
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 210, in test_brute_force_norm_cut1
+    self.assertEqual(len(r), 1)
+AssertionError: 2 != 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 213, in test_brute_force_norm_cut1
+    self.assertTrue(False, 'should take less than 5 seconds...')
+AssertionError: False is not true : should take less than 5 seconds...
+
+source:
+    def test_brute_force_norm_cut1(self):
+         """
+         @points=4
+         """
+         signal.signal(signal.SIGALRM, handler)
+         signal.alarm(5)
+         start = time.time()
+         try:
+             r = brute_force_norm_cut(example_graph(), 1)
+             self.assertEqual(len(r), 1)
+             self.assertEqual(r, [(0.41666666666666663, [('B', 'D')])])
+         except Exception as exc:
+             self.assertTrue(False, 'should take less than 5 seconds...')
+--------------
+
+--------------
+#3: 1.00 points
+Failing test: test_complexity_1: 
+        @points=1
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 132, in test_complexity_1
+    self.assertTrue(x == y, 'k has no effect in worst case')
+AssertionError: False is not true : k has no effect in worst case
+
+source:
+    def test_complexity_1(self):
+         """
+         @points=1
+         """
+         x = complexity_of_bfs(1000, 500, 10)
+         y = complexity_of_bfs(1000, 500, 50)
+         self.assertTrue(y is not None, 'nothing returned')
+         self.assertTrue(x == y, 'k has no effect in worst case')
+--------------
+
+--------------
+#4: 1.00 points
+Failing test: test_complexity_2: 
+        @points=1
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 141, in test_complexity_2
+    self.assertTrue(y > x, 'complexity depends on number of edges')
+AssertionError: False is not true : complexity depends on number of edges
+
+source:
+    def test_complexity_2(self):
+         """
+         @points=1
+         """
+         x = complexity_of_bfs(1000, 500, 10)
+         y = complexity_of_bfs(1000, 1000, 10)
+         self.assertTrue(y is not None, 'nothing returned')
+         self.assertTrue(y > x, 'complexity depends on number of edges')
+         x = complexity_of_bfs(1000, 500, 10)
+         y = complexity_of_bfs(2000, 500, 10)
+         self.assertTrue(y > x, 'complexity depends on number of nodes')
+--------------
+
+--------------
+#5: 1.00 points
+Failing test: test_complexity_4: 
+        @points=1
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 163, in test_complexity_4
+    self.assertEqual(round(y - x, 0), 4000, 'additive')
+AssertionError: 0 != 4000 : additive
+
+source:
+    def test_complexity_4(self):
+         """
+         @points=1
+         """
+         x = complexity_of_bfs(2000, 500, 10)
+         y = complexity_of_bfs(6000, 500, 10)
+         self.assertEqual(round(y - x, 0), 4000, 'additive')
+         x = complexity_of_bfs(2000, 500, 10)
+         y = complexity_of_bfs(2000, 1500, 10)
+         self.assertEqual(round(y - x, 0), 1000, 'additive')
+--------------
+
+--------------
+#6: 3.00 points
+Failing test: test_jaccard: 
+        @points=3
+        
+Traceback (most recent call last):
+  File "../assignments-sol/a1/a1_test.py", line 283, in test_jaccard
+    self.assertEqual(res, [(('D', 'E'), 0.5), (('D', 'A'), 0.0)])
+AssertionError: Lists differ: [(['D', 'E'], 0.5), (['D', 'A'], 0.0)] != [(('D', 'E'), 0.5), (('D', 'A'), 0.0)]
+
+First differing element 0:
+(['D', 'E'], 0.5)
+(('D', 'E'), 0.5)
+
+- [(['D', 'E'], 0.5), (['D', 'A'], 0.0)]
+?   ^        ^         ^        ^
+
++ [(('D', 'E'), 0.5), (('D', 'A'), 0.0)]
+?   ^        ^         ^        ^
+
+
+source:
+    def test_jaccard(self):
+         """
+         @points=3
+         """
+         g = example_graph()
+         train_graph = make_training_graph(g, 'D', 2)
+         res = jaccard(train_graph, 'D', 2)
+         self.assertEqual(res, [(('D', 'E'), 0.5), (('D', 'A'), 0.0)])
+--------------
+
