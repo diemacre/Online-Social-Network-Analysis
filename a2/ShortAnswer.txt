@@ -1,0 +1,44 @@
+1. Looking at the top errors printed by get_top_misclassified, name two ways you would modify your classifier to improve accuracy (it could be features, tokenization, or something else.)
+
+TOKENIZATION: 
+
+-Creating a function that removes token words that are in a set of stop words. This is usefull to remove neutral words that may by causing to missclassify some text. For instance, imaging
+the word "the" appears much more times in the training set of positives than negatives. This will cause the model to tend to predict more positives if detecting the word "the" 
+(it will be not balanced). This words do not add any significate to the model.
+
+-Also more positives and negative words can be added to both actual sets.
+
+FEATURES: 
+
+-Modifing the token_pair_features() function by increasing or deacresing the window size.
+
+-Modifing the lexicon_features() function adding a new label for stop_words (feats['stop_words']) and count the number of times one of the words of the stop_words set appears in each text
+instead of removing them when tokenization.
+
+-Creating a new funcion/feature similar to token_pair_features() but using trios and variating the k value.
+
+MODEL:
+
+-Using a diferent model such us Naive Bayes
+
+
+2. Implement one of the above methods. How did it affect the results?
+
+Initial training Accuracy: 0.77
+Initial testing  Accuracy: 0.745
+
+Methods:
+
+In this case I tried two methods seperatelly (there is no sense on making both at the same time):
+
+    -TOKENIZATION:
+        removeStopWords(strings): it should be used when tokenization is done. It removes the words that appear in the set of stop words.
+            training Accuracy: 0.7725 improve by 0.0025
+            testing  Accuracy: 0.7975 improve by 0.0525
+    -FEATURES:
+        MODIFYING: lexicon_features(tokens, feats): adding a new label feats['stop_words'], which also counts the number of apperance of stop words
+            training Accuracy: 0.775 improve by 0.005
+            testing  Accuracy: 0.7425 decrease by 0.0025
+        NEW: token_trios_features(tokens, feats, k=4): using this extra function as feature. It has the problem that takes much longer to compute.
+            training Accuracy: 0.77 not improve
+            testing  Accuracy: 0.745 not improve
